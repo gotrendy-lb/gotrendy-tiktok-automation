@@ -21,7 +21,10 @@ import numpy as np
 from datetime import datetime
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
-from moviepy.editor import VideoClip, VideoFileClip, ImageClip, CompositeVideoClip
+try:
+    from moviepy.editor import VideoClip, VideoFileClip, ImageClip, CompositeVideoClip, ColorClip
+except ImportError:
+    from moviepy import VideoClip, VideoFileClip, ImageClip, CompositeVideoClip, ColorClip
 import dropbox
 from openai import OpenAI
 
@@ -241,7 +244,6 @@ def make_tiktok_video_from_video(video_path):
     clip = clip.resize((new_w, new_h))
 
     # Create a black background
-    from moviepy.editor import ColorClip
     bg = ColorClip(size=(target_w, target_h), color=[0, 0, 0], duration=clip.duration)
     x_offset = (target_w - new_w) // 2
     y_offset = (target_h - new_h) // 2
@@ -555,3 +557,4 @@ def run_automation():
 
 if __name__ == '__main__':
     run_automation()
+
